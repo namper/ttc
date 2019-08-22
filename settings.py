@@ -1,4 +1,4 @@
-BUS_NUMBER = int(input('ავტობუსის ნომერი: '))
+BUS_NUMBER = 90 # int(input('ავტობუსის ნომერი: '))
 
 LIVE_URLS = [
     f'http://transfer.ttc.com.ge:8080/otp/routers/ttc/buses?routeNumber={BUS_NUMBER}&forward=0',
