@@ -1,6 +1,6 @@
 import requests
-from settings import *
 import geocoder
+from settings import *
 
 
 def live_bus(stop_data: list) -> None:
@@ -27,26 +27,15 @@ def generate_distance_url(current, destination, travel_by: str = 'walking', toke
         f'https://api.mapbox.com/directions-matrix/v1/mapbox/{travel_by}/{current};{destination}?access_token={token}'
 
 
-def closest_stop(stop_data: list):
-    # error is too high for this task
-    me = geocoder.ip('me')
-    location = (me.lon, me.lat)
-
+def closest_stop(location: tuple, stop_data: list, moving_type: str = 'walking') -> list:
     stop_data = [{'name': i['Name'], 'location': (i['Lon'], i['Lat'])} for i in stop_data]
     base = stop_data[0]
     to = generate_distance_url(location, base['location'])
-    minimal = [base, max(requests.get(to).json()['durations'][0])]
+    minimal = [base, requests.get(to).json()['durations'][0][1]]
     for _stop in stop_data:
         destination = _stop['location']
-        to = generate_distance_url(location, destination, 'driving')
-        duration = max(requests.get(to).json()['durations'][0])
+        to = generate_distance_url(location, destination, moving_type)
+        duration = requests.get(to).json()['durations'][0][1]
         if minimal[1] > duration:
             minimal = [_stop, duration]
     return minimal
-
-
-if __name__ == '__main__':
-    stops = requests.get(STOP_URLS[0]).json().get('Stops', '') + requests.get(STOP_URLS[1]).json().get('Stops', '')
-    # stop, dur = closest_stop(stops)
-    # print(f'უახლოესი გაჩერება {stop["name"]} საჭიროა დაახლოებით: {round(dur / 60, 2)} წუთი')
-    live_bus(stops)
