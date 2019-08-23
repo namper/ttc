@@ -1,5 +1,4 @@
 import requests
-import geocoder
 from settings import *
 
 
@@ -28,7 +27,7 @@ def generate_distance_url(current, destination, travel_by: str = 'walking', toke
 
 
 def closest_stop(location: tuple, stop_data: list, moving_type: str = 'walking') -> list:
-    stop_data = [{'name': i['Name'], 'location': (i['Lon'], i['Lat'])} for i in stop_data]
+    stop_data = [{'name': i['Name'], 'location': (i['Lon'], i['Lat']), 'id': i['StopId']} for i in stop_data]
     base = stop_data[0]
     to = generate_distance_url(location, base['location'])
     minimal = [base, requests.get(to).json()['durations'][0][1]]
@@ -39,3 +38,13 @@ def closest_stop(location: tuple, stop_data: list, moving_type: str = 'walking')
         if minimal[1] > duration:
             minimal = [_stop, duration]
     return minimal
+
+
+def show_times(stop_id: int) -> None:
+    r = requests.get(f'http://transfer.ttc.com.ge:8080/otp/routers/ttc/stopArrivalTimes?stopId={stop_id}')
+    r = r.json()['ArrivalTime']
+    print('ტაბლო: ')
+    for bus in r:
+        route_n, time = str(bus['RouteNumber']), str(bus['ArrivalTime'])
+        print(f"{route_n}" + " " * formatter(route_n, 2) + f"{bus['ArrivalTime']} წუთი" + ' ' * formatter(
+            time, 5) + f"{bus['DestinationStopName']}")
