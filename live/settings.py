@@ -17,7 +17,7 @@ DIRECTION = {
 secret_token = 'sk.eyJ1IjoibmFtcGVyIiwiYSI6ImNqemxsMDR4djAzZDkzanBiMGNheGs4dHMifQ.VNRhf1JGDRPL-x0rry3Ngg'
 
 
-def formatter(sp: str, extend: int):
+def formatter(sp: str, extend: int) -> int:
     sp = len(sp)
     if sp == 1:
         sp = 3
