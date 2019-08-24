@@ -1,6 +1,6 @@
 import math
 import requests
-from settings import STOP_URLS
+from live.settings import STOP_URLS
 
 
 # DOESN'T ACCOMMODATE ROUTES
