@@ -87,7 +87,7 @@ def closest_stop_runner(bus_id: int) -> None:
     ]
     stop_data = requests.get(_STOP_URLS[0]).json().get('Stops', '') + requests.get(_STOP_URLS[1]).json().get('Stops',
                                                                                                              '')
-    result = subprocess.run(['../whereami'], stdout=subprocess.PIPE)
+    result = subprocess.run(['../live/whereami'], stdout=subprocess.PIPE)
     result = result.stdout.decode('utf-8')
     lat = re.search(r'(?<=Latitude: )([\d+\.]+)', result).group(0)
     lon = re.search(r'(?<=Longitude: )([\d+\.]+)', result).group(0)
