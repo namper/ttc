@@ -18,9 +18,5 @@ secret_token = 'sk.eyJ1IjoibmFtcGVyIiwiYSI6ImNqemxsMDR4djAzZDkzanBiMGNheGs4dHMif
 
 
 def formatter(sp: str, extend: int) -> int:
-    sp = len(sp)
-    if sp == 1:
-        sp = 3
-    elif sp == 3:
-        sp = 1
-    return sp + extend
+    # sp to be changed from 3 to 1 , and from 1 to 3 
+    return (len(sp) + 2)%4 + extend
